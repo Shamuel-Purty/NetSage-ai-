@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{{ case["Case ID"] }} · NetSage AI</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- HEADER -->
+
+      <header>
+        <div>
+          <p class="eyebrow">NETSAGE AI · CASE EXPLORER</p>
+
+          <h1>{{ case["Case ID"] }}</h1>
+
+          <p class="subtitle">{{ case["Title"] }}</p>
+        </div>
+
+        <div class="status">
+          <span class="status-dot"></span>
+          Case Evaluation
+        </div>
+      </header>
+
+      <!-- BACK -->
+
+      <section>
+        <a href="/" class="back-link"> ← Back to Dashboard </a>
+      </section>
+
+      <!-- CASE INFORMATION -->
+
+      <section>
+        <h2>Case Information</h2>
+
+        <div class="table-card">
+          <table>
+            <tbody>
+              <tr>
+                <th>Case ID</th>
+                <td>{{ case["Case ID"] }}</td>
+              </tr>
+
+              <tr>
+                <th>Title</th>
+                <td>{{ case["Title"] }}</td>
+              </tr>
+
+              <tr>
+                <th>Symptom</th>
+                <td>{{ case["Symptom"] }}</td>
+              </tr>
+
+              <tr>
+                <th>Topology</th>
+                <td>{{ case["Topology Note"] }}</td>
+              </tr>
+
+              <tr>
+                <th>Devices</th>
+                <td>{{ case["Devices"] }}</td>
+              </tr>
+
+              <tr>
+                <th>Concept</th>
+                <td>{{ case["Concept Tag"] }}</td>
+              </tr>
+
+              <tr>
+                <th>OSI Layer</th>
+                <td>{{ case["OSI Layer"] }}</td>
+              </tr>
+
+              <tr>
+                <th>Severity</th>
+                <td>{{ case["Severity"] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- EXPECTED DIAGNOSIS -->
+
+      <section>
+        <h2>Expected Diagnosis</h2>
+
+        <div class="audit-card">
+          <div class="audit-grid">
+            <div>
+              <label>Expected Fault</label>
+
+              <p>{{ case["Expected Fault"] }}</p>
+            </div>
+
+            <div>
+              <label>Recommended Fix</label>
+
+              <p>{{ case["Recommended Fix"] }}</p>
+            </div>
+
+            <div>
+              <label>Verification Command</label>
+
+              <p>{{ case["Verification Command"] }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI EVALUATION -->
+
+      <section>
+        <h2>AI Evaluation</h2>
+
+        {% if result %}
+
+        <div class="audit-card">
+          <div class="audit-header">
+            <strong> {{ result["Verdict"] }} </strong>
+
+            <span class="decision"> {{ result["Score"] }} </span>
+          </div>
+
+          {% if ai_diagnosis %}
+
+          <div class="audit-grid">
+            {% if ai_diagnosis.get("root_cause") %}
+
+            <div>
+              <label>AI Root Cause</label>
+
+              <p>{{ ai_diagnosis.get("root_cause") }}</p>
+            </div>
+
+            {% endif %} {% if ai_diagnosis.get("confidence") %}
+
+            <div>
+              <label>AI Confidence</label>
+
+              <p>{{ ai_diagnosis.get("confidence") }}</p>
+            </div>
+
+            {% endif %}
+          </div>
+
+          {% endif %}
+        </div>
+
+        {% else %}
+
+        <div class="empty-message">
+          No AI evaluation result found for this case.
+        </div>
+
+        {% endif %}
+      </section>
+
+      <!-- HUMAN REVIEW -->
+
+      {% if review %}
+
+      <section>
+        <h2>Human Review</h2>
+
+        <div class="audit-card">
+          <div class="audit-grid">
+            <div>
+              <label>Human Decision</label>
+
+              <p>
+                {{ review.get("Human_Decision") or review.get("Human Decision")
+                or "Not provided" }}
+              </p>
+            </div>
+
+            <div>
+              <label>Issue Identified</label>
+
+              <p>{{ review.get("Issue") or "Not provided" }}</p>
+            </div>
+
+            <div>
+              <label>Human Correction</label>
+
+              <p>
+                {{ review.get("Human_Correction") or review.get("Human
+                Correction") or "Not provided" }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {% endif %}
+
+      <footer>NetSage AI · Network Diagnosis Evaluation System</footer>
+    </div>
+  </body>
+</html>

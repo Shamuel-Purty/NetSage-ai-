@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>New Diagnosis — NetSage AI</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container diagnosis-page">
+      <!-- HEADER -->
+      <header>
+        <div>
+          <p class="eyebrow">RESPONSIBLE NETWORK DIAGNOSTICS</p>
+
+          <h1>New Diagnosis</h1>
+
+          <p class="subtitle">
+            Describe a network problem and let NetSage AI investigate it.
+          </p>
+        </div>
+
+        <div class="status">
+          <span class="status-dot"></span>
+          Diagnosis Mode
+        </div>
+      </header>
+      <form method="POST" action="{{ url_for('diagnose') }}">
+        <!-- PROBLEM DESCRIPTION -->
+        <section>
+          <h2>Describe the Problem</h2>
+
+          <div class="table-card">
+            <label for="problem"> What is happening? </label>
+
+            <textarea
+              id="problem"
+              name="problem"
+              rows="6"
+              placeholder="Example: PC-01 cannot access the internet, but it can ping the default gateway..."
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- SYMPTOMS -->
+        <section>
+          <h2>Symptoms</h2>
+
+          <div class="table-card">
+            <label for="symptoms"> What symptoms have you observed? </label>
+
+            <textarea
+              id="symptoms"
+              name="symptoms"
+              rows="5"
+              placeholder="Example: Gateway responds to ping. 8.8.8.8 does not respond. Other PCs work normally..."
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- NETWORK INFORMATION -->
+        <section>
+          <h2>Network Information</h2>
+
+          <div class="table-card">
+            <label for="network_info">
+              Provide any information you know about the network.
+            </label>
+
+            <textarea
+              id="network_info"
+              name="network_info"
+              rows="6"
+              placeholder="Example: PC → Switch → Router&#10;VLAN: 20&#10;PC IP: 192.168.20.10&#10;Gateway: 192.168.20.1"
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- DIAGNOSE BUTTON -->
+        <section>
+          <div class="diagnosis-action">
+            <button type="submit" class="diagnose-button">
+              Diagnose Network →
+            </button>
+          </div>
+        </section>
+      </form>
+      {% if submitted %}
+      <section class="diagnosis-result">
+        <div class="section-heading">
+          <div>
+            <h2>NetSage AI Diagnosis</h2>
+            <p class="section-description">
+              AI-generated analysis of the network problem.
+            </p>
+          </div>
+        </div>
+
+        <div class="table-card diagnosis-output">
+          <h3>Diagnosis</h3>
+          <div class="diagnosis-card">
+            <div class="diagnosis-item">
+              <h3>Root Cause</h3>
+              <p>{{ diagnosis.root_cause }}</p>
+            </div>
+
+            <div class="diagnosis-item">
+              <h3>Confidence</h3>
+              <span class="confidence-badge"> {{ diagnosis.confidence }} </span>
+            </div>
+
+            <div class="diagnosis-item">
+              <h3>Evidence</h3>
+
+              {% if diagnosis.evidence %}
+              <ul>
+                {% for item in diagnosis.evidence %}
+                <li>{{ item }}</li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p>No evidence provided.</p>
+              {% endif %}
+            </div>
+
+            <div class="diagnosis-item">
+              <h3>Next Diagnostic Command</h3>
+
+              <pre class="command-box">{{ diagnosis.next_command }}</pre>
+            </div>
+
+            <div class="diagnosis-item">
+              <h3>Recommended Investigation / Fix</h3>
+
+              {% if diagnosis.fix_steps %}
+              <ol>
+                {% for step in diagnosis.fix_steps %}
+                <li>{{ step }}</li>
+                {% endfor %}
+              </ol>
+              {% else %}
+              <p>No fix steps provided.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+      {% endif %}
+      <!-- BACK -->
+      <section>
+        <a href="/" class="case-link"> ← Back to Dashboard </a>
+      </section>
+
+      <footer>NetSage AI · Network Diagnosis System</footer>
+    </div>
+  </body>
+</html>
