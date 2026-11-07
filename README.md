@@ -29,11 +29,12 @@ Artificial Intelligence.
 
 ##  Project Information
 
-Developed by: Shamuel Purty
+Developed by: Shamuel Purty and Shem Oraon 
 
 Project: NetSage AI
 
 GitHub: https://github.com/Shamuel-Purty/NetSage-ai
+GitHub: https://github.com/DazeRunner
 
 ## License
 
